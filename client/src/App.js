@@ -1,6 +1,8 @@
+/* App.js */
 import React, { useState, useEffect } from 'react';
 import Login from './Login';
 import Canvas from './Canvas';
+import './index.css';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -10,13 +12,10 @@ function App() {
   const [roomName, setRoomName] = useState('');
   const [isPrivate, setIsPrivate] = useState(true);
 
-  // При загрузке читаем roomId из query-параметров
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const id = params.get('roomId');
-    if (id) {
-      setRoomId(Number(id));
-    }
+    if (id) setRoomId(Number(id));
   }, []);
 
   if (!user) {
@@ -25,10 +24,10 @@ function App() {
 
   if (!roomId) {
     return (
-      <div style={{ maxWidth: 400, margin: '2rem auto', textAlign: 'center' }}>
-        <h2>Комнаты</h2>
+      <div className="container">
+        <h2 className="title">Комнаты</h2>
         {!creating ? (
-          <button onClick={() => setCreating(true)} style={{ marginBottom: '1rem' }}>
+          <button onClick={() => setCreating(true)} className="button" style={{ marginBottom: '1rem' }}>
             Создать новую комнату
           </button>
         ) : (
@@ -49,7 +48,6 @@ function App() {
                   throw new Error(errText);
                 }
                 const data = await res.json();
-                // Обновляем URL, добавляем ?roomId=
                 window.history.replaceState(null, '', `?roomId=${data.room.id}`);
                 setRoomId(data.room.id);
                 alert(`Комната создана с ID: ${data.room.id}`);
@@ -63,33 +61,35 @@ function App() {
               value={roomName}
               onChange={e => setRoomName(e.target.value)}
               required
-              style={{ width: '100%', marginBottom: '0.5rem' }}
+              className="input"
             />
             <label>
               <input
                 type="checkbox"
                 checked={isPrivate}
                 onChange={e => setIsPrivate(e.target.checked)}
+                className="checkbox"
               /> Приватная
             </label>
             <br />
-            <button type="submit" style={{ marginTop: '0.5rem' }}>Создать</button>
+            <button type="submit" className="button" style={{ marginTop: '1rem' }}>Создать</button>
           </form>
         )}
         <div style={{ marginTop: '2rem' }}>
-          <h3>Или присоединиться к существующей комнате</h3>
+          <h3 className="subtitle">Или присоединиться к существующей комнате</h3>
           <input
             type="number"
             placeholder="Room ID"
             value={joiningId}
             onChange={e => setJoiningId(e.target.value)}
-            style={{ width: '100%', padding: '0.5rem', marginBottom: '0.5rem' }}
+            className="input-number"
           />
           <button
             onClick={() => {
               setRoomId(Number(joiningId));
               window.history.replaceState(null, '', `?roomId=${joiningId}`);
             }}
+            className="button"
             style={{ width: '100%' }}
           >
             Присоединиться
