@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { socket } from './socket';
+import { socket } from '../services/socket';
+import Chat from './Chat'; 
 
 export default function Canvas({ roomId }) {
   const canvasRef = useRef(null);
@@ -17,8 +18,11 @@ export default function Canvas({ roomId }) {
   // Initialize socket listeners
   useEffect(() => {
     if (!roomId) return;
-
+    console.log('[Canvas] эмитим join-room', roomId);
     socket.emit('join-room', { roomId });
+    socket.once('joined-room', ({ roomId: rid }) =>
+      console.log(`[Canvas] получили joined-room ${rid}`)
+    );
     socket.on('joined-room', ({ roomId: rid }) => console.log(`Joined room ${rid}`));
     socket.on('draw', ({ x0, y0, x1, y1, color, size, tool }) => {
       const canvas = canvasRef.current;
@@ -182,16 +186,20 @@ export default function Canvas({ roomId }) {
       </div>
 
       <p style={{ marginBottom: 10 }}>Вы в комнате: <strong>{roomId}</strong></p>
-      <canvas
-        ref={canvasRef}
-        width={800}
-        height={600}
-        style={{ border: '2px solid #ddd', borderRadius: 8, background: '#fff', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}
-        onMouseDown={startDrawing}
-        onMouseMove={draw}
-        onMouseUp={stopDrawing}
-        onMouseLeave={stopDrawing}
-      />
+      <div  style={{ display: 'flex'}}>
+        <canvas
+          ref={canvasRef}
+          width={800}
+          height={600}
+          style={{ border: '2px solid #ddd', borderRadius: 8, background: '#fff', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}
+          onMouseDown={startDrawing}
+          onMouseMove={draw}
+          onMouseUp={stopDrawing}
+          onMouseLeave={stopDrawing}
+        />
+        <Chat roomId={roomId} user={JSON.parse(localStorage.getItem('user'))} />
+
+      </div>
     </div>
   );
 }

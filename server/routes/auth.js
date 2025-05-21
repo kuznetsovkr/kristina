@@ -1,7 +1,7 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const db = require('../db');
+const db = require('../db/db');
 
 const router = express.Router();
 
@@ -37,5 +37,27 @@ router.post('/login', async (req, res) => {
   });
   res.json({ token, user: { id: user.id, username: user.username } });
 });
+
+router.get('/me', async (req, res) => {
+  const authHeader = req.headers['authorization'];
+  if (!authHeader) return res.sendStatus(401);
+
+  const token = authHeader.split(' ')[1];
+  if (!token) return res.sendStatus(401);
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const { rows } = await db.query(
+      'SELECT id, username FROM users WHERE id = $1',
+      [decoded.id]
+    );
+    if (!rows.length) return res.sendStatus(404);
+    res.json({ user: rows[0] });
+  } catch (err) {
+    console.error('JWT ERROR:', err.message);
+    return res.sendStatus(401);
+  }
+});
+
 
 module.exports = router;

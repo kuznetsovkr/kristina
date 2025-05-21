@@ -1,18 +1,17 @@
-/* client/src/Login.js */
 import React, { useState } from 'react';
 
 const styles = {
   container: {
     maxWidth: 400,
-    margin: '2rem auto',
+    margin: '0',
     padding: '1rem',
     backgroundColor: '#ffffff',
-    borderRadius: '8px',
+    borderRadius: '10px',
     boxShadow: '0 4px 12px rgba(0,0,0,0.05)',
     textAlign: 'center'
   },
   input: {
-    width: '100%',
+    width: '90%',
     padding: '0.5rem',
     marginBottom: '0.75rem',
     border: '1px solid #d1d5db',
@@ -65,7 +64,7 @@ export default function Login({ onSuccess }) {
         onSuccess(data.user);
       } else {
         setIsRegistering(false);
-        alert('Регистрация прошла успешно. Войдите в систему.');
+        console.log('Регистрация прошла успешно. Войдите в систему.');
       }
     } catch (err) {
       setError(err.message);
