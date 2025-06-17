@@ -7,7 +7,7 @@ const shortId = generateShortId();
 const router = express.Router();
 
 function generateShortId() {
-  return crypto.randomBytes(4).toString('hex'); // пример: '9f2c1a7e'
+  return crypto.randomBytes(4).toString('hex');
 }
 
 async function generateUniqueShortId() {
@@ -18,7 +18,6 @@ async function generateUniqueShortId() {
   }
 }
 
-// Создать комнату
 router.post('/', auth, async (req, res) => {
   const { name, is_private } = req.body;
   const owner_id = req.user.id;
@@ -41,7 +40,6 @@ router.post('/', auth, async (req, res) => {
 });
 
 
-// Получить список публичных комнат
 router.get('/', auth, async (req, res) => {
   const { rows } = await db.query(
     'SELECT id, name, owner_id, created_at FROM rooms WHERE is_private = FALSE'

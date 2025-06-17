@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { Routes, Route, useNavigate, useParams, useLocation } from 'react-router-dom';
-import InviteHandler from './components/InviteHandler'; // создадим чуть позже
+import { useState, useEffect } from 'react';
+import { Routes, Route } from 'react-router-dom';
+import InviteHandler from './components/InviteHandler'; 
 import Canvas from './components/Canvas';
 import RoomOptions from './components/RoomOptions';
 import Header from './components/Header';
@@ -50,7 +50,6 @@ function App() {
     return <Canvas roomId={roomId} />;
   };
 
-  // На самой первой странице (без юзера или без showRoomOptions) хедер скрываем
   const shouldShowHeader = user && (roomId || showRoomOptions);
 
   return (

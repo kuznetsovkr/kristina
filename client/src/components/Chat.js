@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { socket } from '../services/socket';
 
 export default function Chat({ roomId, user }) {

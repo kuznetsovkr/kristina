@@ -7,15 +7,13 @@ export default function Canvas({ roomId }) {
   const [drawing, setDrawing] = useState(false);
   const [lastPos, setLastPos] = useState({ x: 0, y: 0 });
 
-  // Tools state
-  const [tool, setTool] = useState('brush'); // 'brush', 'eraser', 'fill', 'select'
+  const [tool, setTool] = useState('brush');
   const [brushColor, setBrushColor] = useState('#000000');
   const [fillColor, setFillColor] = useState('#FF0000');
   const [brushSize, setBrushSize] = useState(5);
   const [selectionStart, setSelectionStart] = useState(null);
   const [selectionRect, setSelectionRect] = useState(null);
 
-  // Initialize socket listeners
   useEffect(() => {
     if (!roomId) return;
     console.log('[Canvas] эмитим join-room', roomId);
@@ -46,7 +44,6 @@ export default function Canvas({ roomId }) {
     };
   }, [roomId]);
 
-  // Update cursor to reflect tool and size
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;

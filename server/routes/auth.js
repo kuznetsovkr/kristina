@@ -5,7 +5,6 @@ const db = require('../db/db');
 
 const router = express.Router();
 
-// Регистрация
 router.post('/register', async (req, res) => {
   console.log('BODY REGISTER:', req.body);
   const { username, password } = req.body;
@@ -22,7 +21,6 @@ router.post('/register', async (req, res) => {
   }
 });
 
-// Логин
 router.post('/login', async (req, res) => {
   const { username, password } = req.body;
   const { rows } = await db.query('SELECT * FROM users WHERE username = $1', [username]);

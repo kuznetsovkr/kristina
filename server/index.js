@@ -28,7 +28,7 @@ io.use((socket, next) => {
 
   try {
     const payload = jwt.verify(token, process.env.JWT_SECRET);
-    socket.user = payload;       // сохраняем инфо о пользователе на сокете
+    socket.user = payload;       
     next();
   } catch (err) {
     next(new Error('Authentication error'));
@@ -36,7 +36,6 @@ io.use((socket, next) => {
 });
 
 
-// При подключении клиента
 io.on('connection', socket => {
     console.log(`User connected: ${socket.id}`);
 
@@ -44,7 +43,6 @@ io.on('connection', socket => {
         console.log(`User disconnected: ${socket.id}`);
     });
 
-    // Клиент просит присоединиться к комнате
     socket.on('join-room', async ({ roomId }) => {
       console.log(`Запрос на вход в комнату ${roomId}`);
       console.log('socket.user:', socket.user);
@@ -61,7 +59,6 @@ io.on('connection', socket => {
         const isPrivate = rows[0].is_private;
 
         if (isPrivate) {
-          // ⚠️ если socket.user нет — не даём войти
           if (!socket.user) return socket.emit('error', 'Not authorized');
 
           const check = await db.query(
@@ -73,7 +70,7 @@ io.on('connection', socket => {
           }
         }
 
-        socket.join(`room-${roomId}`); // ✅ вот это критично
+        socket.join(`room-${roomId}`);
         socket.emit('joined-room', { roomId });
         console.log(`[Server] Socket ${socket.id} joined room-${roomId}`);
       } catch (err) {
@@ -82,7 +79,6 @@ io.on('connection', socket => {
     });
 
 
-    // Выход из комнаты
     socket.on('leave-room', ({ roomId }) => {
     socket.leave(`room-${roomId}`);
     socket.emit('left-room', { roomId });

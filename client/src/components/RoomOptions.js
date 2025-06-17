@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import CreateRoom from './CreateRoom';
 import JoinRoom from './JoinRoom';
 import Login from './Login';
@@ -6,7 +6,6 @@ import Login from './Login';
 export default function RoomOptions({ onRoomEnter, user, setUser }) {
   const [creating, setCreating] = useState(false);
 
-  // Автоматическое восстановление юзера из localStorage
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
@@ -14,7 +13,6 @@ export default function RoomOptions({ onRoomEnter, user, setUser }) {
     }
   }, [setUser]);
 
-  // При логине сохраняем в localStorage
   const handleLogin = (userData) => {
     setUser(userData);
     localStorage.setItem('user', JSON.stringify(userData));
