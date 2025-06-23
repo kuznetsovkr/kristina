@@ -4,6 +4,7 @@ import InviteHandler from './components/InviteHandler';
 import Canvas from './components/Canvas';
 import RoomOptions from './components/RoomOptions';
 import Header from './components/Header';
+import Footer from './components/Footer';
 import './index.css';
 
 function App() {
@@ -61,6 +62,7 @@ function App() {
           <InviteHandler onRoomEnter={setRoomId} />
         } />
       </Routes>
+      <Footer />
     </>
   );
 }

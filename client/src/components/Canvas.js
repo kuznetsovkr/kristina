@@ -14,6 +14,15 @@ export default function Canvas({ roomId }) {
   const [selectionStart, setSelectionStart] = useState(null);
   const [selectionRect, setSelectionRect] = useState(null);
 
+  const handleSave = () => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const link = document.createElement('a');
+    link.href = canvas.toDataURL('image/png');
+    link.download = 'canvas.png';
+    link.click();
+  };
+
   useEffect(() => {
     if (!roomId) return;
     console.log('[Canvas] эмитим join-room', roomId);
@@ -180,6 +189,9 @@ export default function Canvas({ roomId }) {
             <input type="color" value={fillColor} onChange={e => setFillColor(e.target.value)} style={{ marginLeft: 8 }} />
           </label>
         )}
+        <button onClick={handleSave} style={{ padding: '0.5rem 1rem', border: 'none', backgroundColor: '#4f46e5', color: '#fff', borderRadius: 4, cursor: 'pointer' }}>
+          Сохранить
+        </button>
       </div>
 
       <p style={{ marginBottom: 10 }}>Вы в комнате: <strong>{roomId}</strong></p>

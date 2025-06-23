@@ -84,7 +84,7 @@ const styles = {
   },
   message: {
     marginBottom: 8,
-    fontSize: '0.9rem',
+    fontSize: '1.3rem',
   },
   inputContainer: {
     display: 'flex',
